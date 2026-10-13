@@ -1,0 +1,44 @@
+:root {
+  --bg: #0b0e14;
+  --surface: #141a26;
+  --line: #263049;
+  --accent: #e5324b;
+  --live: #22c55e;
+  --text: #f2f5fa;
+  --muted: #9aa4b5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+}
+.hero, main, footer { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand h1 { margin: 0; font-size: 2rem; }
+.tagline { margin: 2px 0 0; color: var(--muted); }
+.lede { font-size: 1.05rem; }
+code { background: #00000055; padding: 1px 6px; border-radius: 6px; font-size: 0.92em; }
+pre { background: #00000066; border: 1px solid var(--line); border-radius: 12px; padding: 12px; overflow-x: auto; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 14px 0;
+}
+.card h2 { margin-top: 0; font-size: 1.15rem; }
+.grid { display: grid; gap: 0 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.steps li, .card ul li { margin: 6px 0; }
+.muted { color: var(--muted); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: var(--surface);
+}
+.live-dot strong { color: var(--live); }
+footer { color: var(--muted); font-size: 0.85rem; }

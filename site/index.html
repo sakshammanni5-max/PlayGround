@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>StreamApp — Android Screen Livestreaming to YouTube</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="hero">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 96 96" width="56" height="56" aria-hidden="true">
+      <rect x="4" y="4" width="88" height="88" rx="12" fill="#141A26" stroke="#263049" stroke-width="3"/>
+      <circle cx="21" cy="21" r="7" fill="#E5324B"/>
+      <path d="M40 30 L62 48 L40 66 Z" fill="#F2F5FA"/>
+      <g fill="#E5324B">
+        <rect x="24" y="66" width="10" height="10"/>
+        <rect x="38" y="62" width="10" height="14"/>
+        <rect x="52" y="58" width="10" height="18"/>
+        <rect x="66" y="54" width="10" height="22"/>
+      </g>
+    </svg>
+    <div>
+      <h1>StreamApp</h1>
+      <p class="tagline">Screen livestreaming for YouTube — built for BGMI gameplay</p>
+    </div>
+  </div>
+  <p class="lede">Native Android app (<code>com.streamapp</code>) that captures the phone screen,
+    encodes with hardware MediaCodec via RootEncoder 2.8.1, mixes game + microphone audio,
+    and pushes RTMP to YouTube Live — controlled from a persistent floating bubble over the game.</p>
+  <div class="cta-row">
+    <span class="pill live-dot">Status: <strong id="build-status">loading…</strong></span>
+    <span class="pill">APK: <code>app-debug.apk</code> · debug · <span id="build-time">…</span></span>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Core workflow</h2>
+    <ol class="steps">
+      <li>Connect the YouTube account (genuine Google OAuth, <code>youtube</code> scope only).</li>
+      <li>Configure title, description, privacy (Public / Unlisted / Private), Made-for-Kids flag.</li>
+      <li>Pick 480p / 720p / 1080p, 30 / 60 / experimental 90 FPS, portrait or landscape.</li>
+      <li>Go live now, or schedule an event (Android still needs one-tap capture approval at air time).</li>
+      <li>Grant screen-capture consent, 3-second countdown, floating bubble appears.</li>
+      <li>Leave the app, play BGMI, toggle mic without killing game audio, stop cleanly from the bubble.</li>
+    </ol>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>Streaming engine</h2>
+      <ul>
+        <li>MediaProjection screen capture + RootEncoder <code>GenericStream</code> RTMP</li>
+        <li>Correct YouTube lifecycle: broadcast → stream → bind → wait <em>active</em> → transition <em>live</em></li>
+        <li>Broken-pipe diagnosis, bounded reconnects (max 3), no silent quality drops</li>
+        <li>90 FPS is experimental: encoder rejection falls back to 60 FPS and says so</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Audio &amp; bubble</h2>
+      <ul>
+        <li>Independent sources: internal/game audio + microphone (mix volume control)</li>
+        <li>Mic OFF never stops game audio, video, or RTMP — no session restart</li>
+        <li>Draggable overlay bubble: live status + elapsed time, mic toggle, mic-privacy shield lock, settings, two-tap stop</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>YouTube API</h2>
+      <ul>
+        <li>Real Data API v3: broadcasts, live streams, binding, thumbnails</li>
+        <li>Thumbnail picker with JPEG/PNG, ≥640×360, ≤2&nbsp;MB validation and real upload result</li>
+        <li>Quota / network / auth errors surfaced honestly; secrets never logged</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Build &amp; verify</h2>
+    <pre><code>cd ~/StreamApp &amp;&amp; ./gradlew assembleDebug
+# → app/build/outputs/apk/debug/app-debug.apk</code></pre>
+    <p class="muted">Device-dependent checks (Google sign-in, RTMP ingest, BGMI overlay play, thumbnail upload)
+      require a physical phone and YouTube credentials — they are not claimed from a compile alone.
+      See <code>build-info.json</code> for this preview build's stamp.</p>
+  </section>
+</main>
+
+<footer>
+  <p>StreamApp preview · static build served from <code>dist/</code></p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
